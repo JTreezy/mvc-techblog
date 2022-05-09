@@ -1,5 +1,5 @@
 const sequelize = require("../config/connection")
-const {User,Blog} = require("../models")
+const {User,Blog,Comment} = require("../models")
 
 const users = [
     {
@@ -34,6 +34,30 @@ const blogs = [
     }
 ]
 
+const comments = [
+    {
+        body: "That was an awesome back aerial",
+        user_id: 1,
+        blog_id: 1
+    },
+    {
+        body: "That was an awesome frontal back",
+        user_id: 1,
+        blog_id: 1
+        
+    },
+    {
+        body: "That was an awesome back",
+        user_id: 1,
+        blog_id: 1
+    },
+    {
+        body: "That was an awesome slingshot",
+        user_id: 1,
+        blog_id: 1
+    }
+]
+
 const feedMe = async ()=>{
     try{
         await sequelize.sync({force:true})
@@ -41,6 +65,7 @@ const feedMe = async ()=>{
             individualHooks:true
         });
         await Blog.bulkCreate(blogs);
+        await Comment.bulkCreate(comments);
         process.exit(0);
     } catch(err){
         console.log(err)

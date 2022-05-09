@@ -13,6 +13,20 @@ router.get("/",(req,res)=>{
     })
 })
 
+router.get('/:id', (req,res) => {
+    Blog.findByPk(req.params.id).then(blog => {
+        console.log(blog)
+        const hbsBlog = blog.get({plain:true})
+        console.log("==========")
+        console.log(hbsBlog)
+        //Get all comments for blog id
+        //Pass all comments into res.render alongside title and body
+        const loggedIn = req.session.user?true:false
+        res.render("blog",{title:hbsBlog.title,body:hbsBlog.body,loggedIn,username:req.session.user?.username})
+    })
+})
+
+
 router.get("/login",(req,res)=>{
     if(req.session.user){
         return res.redirect("/profile")
