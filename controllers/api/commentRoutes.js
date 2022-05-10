@@ -1,24 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const {User,Blog} = require("../models");
-
+const {User,Comment} = require("../../models");
+const withAuth = require('../../util/auth')
 
 //find all
 router.get("/", (req, res) => {
-  Blog.findAll({})
-    .then(dbBlogs => {
-      res.json(dbBlogs);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({ msg: "an error occured", err });
-    });
-});
-//find one
-router.get("/:id", (req, res) => {
-  Blog.findByPk(req.params.id,{})
-    .then(dbBlog => {
-      res.json(dbBlog);
+  Comment.findAll({include:[User, Blog]})
+    .then(dbComments => {
+      res.json(dbComments);
     })
     .catch(err => {
       console.log(err);
@@ -26,18 +15,29 @@ router.get("/:id", (req, res) => {
     });
 });
 
-//create Blog
+//find one
+router.get("/:id", (req, res) => {
+  Comment.findByPk(req.params.id,{include: [User, Blog]})
+    .then(dbComment => {
+      res.json(dbComment);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ msg: "an error occured", err });
+    });
+});
+
+//create Comment
 router.post("/", (req, res) => {
   if(!req.session.user){
-    return res.status(401).json({msg:"ya gotta login to create a blog post!"})
+    return res.status(401).json({msg:"ya gotta login to create a Comment post!"})
 }
-  Blog.create({
-    title:req.body.title,
+  Comment.create({
     body:req.body.body,
     UserId:req.session.user.id
   })
-    .then(newBlog => {
-      res.json(newBlog);
+    .then(newComment => {
+      res.json(newComment);
     })
     .catch(err => {
       console.log(err);
@@ -45,14 +45,17 @@ router.post("/", (req, res) => {
     });
 });
 
-//update Blog
+//update Comment
 router.put("/:id", (req, res) => {
-  Blog.update(req.body, {
+  if(!req.session.user){
+    return res.status(401).json({msg:"Please log in!"})
+  }
+  Comment.update(req.body, {
     where: {
       id: req.params.id
     }
-  }).then(updatedBlog => {
-    res.json(updatedBlog);
+  }).then(updatedComment => {
+    res.json(updatedComment);
   })
   .catch(err => {
     console.log(err);
@@ -60,14 +63,17 @@ router.put("/:id", (req, res) => {
   });
 });
 
-//delete a Blog
+//delete a Comment
 router.delete("/:id", (req, res) => {
-  Blog.destroy({
+  if(!req.session.user){
+    return res.status(401).json({msg:"Please log in!"})
+  }
+  Comment.destroy({
     where: {
       id: req.params.id
     }
-  }).then(delBlog => {
-    res.json(delBlog);
+  }).then(delComment => {
+    res.json(delComment);
   })
   .catch(err => {
     console.log(err);

@@ -3,6 +3,11 @@
 <p>{{body}}</p>
 <hr>
 
+{{#each comments}}
+    <p>{{body}}</p>
+    <p>Date: {{date}}</p>
+    <hr>
+{{/each}}
 <!-- Get all comments for a blog (in front end routes) -->
 <!-- In an each block, similar to home.handlebars, list all comments --> 
 <!-- hr tag -->

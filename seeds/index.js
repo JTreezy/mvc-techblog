@@ -38,11 +38,11 @@ const comments = [
     {
         body: "That was an awesome back aerial",
         user_id: 1,
-        blog_id: 1
+        blog_id: 2
     },
     {
         body: "That was an awesome frontal back",
-        user_id: 1,
+        user_id: 3,
         blog_id: 1
         
     },

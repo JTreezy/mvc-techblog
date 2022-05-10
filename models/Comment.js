@@ -14,6 +14,10 @@ Comment.init({
             len: [1]
         }
     },
+    date: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+    },
     user_id: {
         type:DataTypes.INTEGER,
         allowNull:false,

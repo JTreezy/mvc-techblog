@@ -1,4 +1,3 @@
-console.log("hello")
 document.querySelector("#newBlog").addEventListener("submit",e=>{
     e.preventDefault()
     const blogObj = {
@@ -19,3 +18,5 @@ document.querySelector("#newBlog").addEventListener("submit",e=>{
         }
     })
 })
+
+

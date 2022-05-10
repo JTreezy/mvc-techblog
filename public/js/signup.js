@@ -1,12 +1,11 @@
-console.log("login linked1")
-document.querySelector("#login").addEventListener("submit",event=>{
+document.querySelector("#signup").addEventListener("submit",event=>{
     event.preventDefault();
     const userObj = {
-        username:document.querySelector("#loginUsername").value,
-        password:document.querySelector("#loginPassword").value,
+        username:document.querySelector("#signupUsername").value,
+        password:document.querySelector("#signupPassword").value,
     }
     console.log(userObj)
-    fetch("/api/users/login",{
+    fetch("/api/users/",{
         method:"POST",
         body:JSON.stringify(userObj),
         headers:{
@@ -14,11 +13,10 @@ document.querySelector("#login").addEventListener("submit",event=>{
         }
     }).then(res=>{
         if(res.ok){
-            console.log("user is logged in")
+            console.log("user is signed up")
             location.href="/profile"
         } else {
             alert("please try again")
         }
     })
 })
-

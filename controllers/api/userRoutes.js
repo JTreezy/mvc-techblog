@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const {User,Blog} = require("../models/");
+const {User,Blog, Comment} = require("../../models");
 const bcrypt  = require("bcrypt");
 
 //find all
 router.get("/", (req, res) => {
   User.findAll({
-    include:[Blog]
+    include:[Blog, Comment]
   })
     .then(dbUsers => {
       res.json(dbUsers);
@@ -22,7 +22,7 @@ router.get("/logout",(req,res)=>{
 })
 //find one
 router.get("/:id", (req, res) => {
-  User.findByPk(req.params.id,{})
+  User.findByPk(req.params.id,{include: [Blog, Comment]})
     .then(dbUser => {
       res.json(dbUser);
     })
@@ -34,7 +34,7 @@ router.get("/:id", (req, res) => {
 
 //create user
 router.post("/", (req, res) => {
-  User.create(req.body)
+  User.create(req.body, {individualHooks: true})
     .then(newUser => {
       req.session.user = {
         id:newUser.id,
